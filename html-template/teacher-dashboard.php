@@ -9,8 +9,7 @@
     <title>Preskool - Dashboard</title>
 
     <link rel="shortcut icon" href="assets/img/favicon.png">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
 
     <link rel="stylesheet" href="assets/plugins/bootstrap/css/bootstrap.min.css">
 
@@ -71,8 +70,7 @@
                                     <a href="#">
                                         <div class="media">
                                             <span class="avatar avatar-sm">
-                                                <img class="avatar-img rounded-circle" alt="User Image"
-                                                    src="assets/img/profiles/avatar-02.jpg">
+                                                <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-02.jpg">
                                             </span>
                                             <div class="media-body">
                                                 <p class="noti-details"><span class="noti-title">Carlson Tech</span> has
@@ -87,13 +85,11 @@
                                     <a href="#">
                                         <div class="media">
                                             <span class="avatar avatar-sm">
-                                                <img class="avatar-img rounded-circle" alt="User Image"
-                                                    src="assets/img/profiles/avatar-11.jpg">
+                                                <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-11.jpg">
                                             </span>
                                             <div class="media-body">
                                                 <p class="noti-details"><span class="noti-title">International Software
-                                                        Inc</span> has sent you a invoice in the amount of <span
-                                                        class="noti-title">$218</span></p>
+                                                        Inc</span> has sent you a invoice in the amount of <span class="noti-title">$218</span></p>
                                                 <p class="noti-time"><span class="notification-time">6 mins ago</span>
                                                 </p>
                                             </div>
@@ -104,8 +100,7 @@
                                     <a href="#">
                                         <div class="media">
                                             <span class="avatar avatar-sm">
-                                                <img class="avatar-img rounded-circle" alt="User Image"
-                                                    src="assets/img/profiles/avatar-17.jpg">
+                                                <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-17.jpg">
                                             </span>
                                             <div class="media-body">
                                                 <p class="noti-details"><span class="noti-title">John Hendry</span> sent
@@ -121,8 +116,7 @@
                                     <a href="#">
                                         <div class="media">
                                             <span class="avatar avatar-sm">
-                                                <img class="avatar-img rounded-circle" alt="User Image"
-                                                    src="assets/img/profiles/avatar-13.jpg">
+                                                <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-13.jpg">
                                             </span>
                                             <div class="media-body">
                                                 <p class="noti-details"><span class="noti-title">Mercury Software
@@ -145,14 +139,12 @@
 
                 <li class="nav-item dropdown has-arrow">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                        <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg"
-                                width="31" alt="Ryan Taylor"></span>
+                        <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31" alt="Ryan Taylor"></span>
                     </a>
                     <div class="dropdown-menu">
                         <div class="user-header">
                             <div class="avatar avatar-sm">
-                                <img src="assets/img/profiles/avatar-01.jpg" alt="User Image"
-                                    class="avatar-img rounded-circle">
+                                <img src="assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
                             </div>
                             <div class="user-text">
                                 <h6>Ryan Taylor</h6>
@@ -178,8 +170,7 @@
                             <span>Main Menu</span>
                         </li>
                         <li class="submenu active">
-                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span
-                                    class="menu-arrow"></span></a>
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="index.php">Admin Dashboard</a></li>
                                 <li><a href="teacher-dashboard.php" class="active">Teacher Dashboard</a></li>
@@ -187,8 +178,7 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span
-                                    class="menu-arrow"></span></a>
+                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="students.php">Student List</a></li>
                                 <li><a href="student-details.php">Student View</a></li>
@@ -197,8 +187,7 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span
-                                    class="menu-arrow"></span></a>
+                            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="teachers.php">Teacher List</a></li>
                                 <li><a href="teacher-details.php">Teacher View</a></li>
@@ -207,18 +196,16 @@
                             </ul>
                         </li>
                         <li class="submenu">
-                            <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span
-                                    class="menu-arrow"></span></a>
+                            <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="subjects.php">Subject List</a></li>
                                 <li><a href="add-subject.php">Subject Add</a></li>
                                 <li><a href="edit-subject.php">Subject Edit</a></li>
                             </ul>
                         </li>
-                       
+
                         <li class="submenu">
-                            <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span
-                                    class="menu-arrow"></span></a>
+                            <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="login.php">Login</a></li>
                                 <li><a href="register.php">Register</a></li>
@@ -346,8 +333,7 @@
                                                             </div>
                                                         </td>
                                                         <td><a href="#">Confirmed</a></td>
-                                                        <td><button type="submit"
-                                                                class="btn btn-info">Reschedule</button></td>
+                                                        <td><button type="submit" class="btn btn-info">Reschedule</button></td>
                                                     </tr>
                                                     <tr>
                                                         <td>
@@ -363,8 +349,7 @@
                                                             </div>
                                                         </td>
                                                         <td><a href="#">Confirmed</a></td>
-                                                        <td><button type="submit"
-                                                                class="btn btn-info">Reschedule</button></td>
+                                                        <td><button type="submit" class="btn btn-info">Reschedule</button></td>
                                                     </tr>
                                                     <tr>
                                                         <td>
@@ -380,8 +365,7 @@
                                                             </div>
                                                         </td>
                                                         <td><a href="#">Confirmed</a></td>
-                                                        <td><button type="submit"
-                                                                class="btn btn-info">Reschedule</button></td>
+                                                        <td><button type="submit" class="btn btn-info">Reschedule</button></td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -500,7 +484,8 @@
                                     <div class="calendar-details">
                                         <p>11 am</p>
                                         <h6 class="calendar-red d-flex justify-content-between align-items-center">Break
-                                            <span>11am - 11.30am</span></h6>
+                                            <span>11am - 11.30am</span>
+                                        </h6>
                                     </div>
                                     <div class="calendar-details">
                                         <p>12 pm</p>
