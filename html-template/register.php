@@ -18,7 +18,41 @@
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
+<?php
+require "config.php";
+?>
+<?php
+if(isset($_POST['register'])){
+    $isAccountInDB = "select * from user 
+    where username = '".$_POST['username']."' && password = '".$_POST['password']."'";
+    $isAccountQuery = mysqli_query($conn, $isAccountInDB);
+    
+    if(!($product = mysqli_fetch_assoc($isAccountQuery))){
+        $sql = "INSERT into user 
+        (name, surname, gender, username, password, role)
+        VALUES ('".$_POST['name']."', '".$_POST['surname']."', '".$_POST['gender']."', '".$_POST['username']."' , '".$_POST['password']."','".$_POST['role']."')";
 
+        $result = mysqli_query($conn, $sql);
+        if(!$result){
+            echo "An error occurred: ".mysqli_error();
+        }else{
+            ?>
+                <div class="alert alert-success" role="alert">
+                <i class="bi bi-check2-all"></i>  <?php echo $_POST['name'] ?> added successfully!
+                </div>
+            <?php
+            header("Location: index.php");
+        }
+    }
+    else{
+        ?>
+            <div class="alert alert-danger" role="alert">
+            <i class="bi bi-exclamation-triangle-fill"></i>  <?php echo $_POST['name'] ?> already exist!
+            </div>
+        <?php
+    }
+}
+?>
 <div class="main-wrapper login-body">
 <div class="login-wrapper">
 <div class="container">
@@ -29,26 +63,45 @@
 <div class="login-right">
 <div class="login-right-wrap">
 <h1>Register</h1>
+
 <p class="account-subtitle">Access to our dashboard</p>
 
-<form action="https://preschool.dreamguystech.com/php-template/login.php">
-<div class="form-group">
-<input class="form-control" type="text" placeholder="Name">
+<form method="POST" >
+    <div class="form-group">
+<input class="form-control" type="text" name="name" placeholder="Name">
+
 </div>
 <div class="form-group">
-<input class="form-control" type="text" placeholder="Email">
+<input class="form-control" type="text" name="surname" placeholder="Surname">
 </div>
 <div class="form-group">
-<input class="form-control" type="text" placeholder="Password">
+<select class="form-control" name="gender" placeholder="Gender">
+    <label>Select Gender</label>
+    <option>Female</option>
+    <option>Male</option>
+    
+</select>
 </div>
 <div class="form-group">
-<input class="form-control" type="text" placeholder="Confirm Password">
+<input class="form-control" type="text" name="username" placeholder="Username">
+</div>
+<div class="form-group">
+<input class="form-control" type="password" name="password" placeholder="Password">
+</div>
+<div class="form-group">
+<select class="form-control" name="role" placeholder="Role">
+    <p>Select Role</p>
+    <option>Student</option>
+    <option>Teacher</option>
+    <option>Admin</option>
+</select>
+
 </div>
 <div class="form-group mb-0">
-<button class="btn btn-primary btn-block" type="submit">Register</button>
+
+<button class="btn btn-primary btn-block" name="register" type="submit">Register</button>
 </div>
 </form>
-
 <div class="login-or">
 <span class="or-line"></span>
 <span class="span-or">or</span>

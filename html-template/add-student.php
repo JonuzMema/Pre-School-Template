@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+require "config.php";
+require "authentication.php";
+
+?>
    <!-- Mirrored from preschool.dreamguystech.com/php-template/add-student.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
    <head>
       <meta charset="utf-8">
@@ -309,19 +314,13 @@
                                  </div>
                                  <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>First Name</label>
+                                       <label>Name</label>
                                        <input type="text" class="form-control">
                                     </div>
                                  </div>
                                  <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Last Name</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Student Id</label>
+                                       <label>Surname</label>
                                        <input type="text" class="form-control">
                                     </div>
                                  </div>
@@ -329,126 +328,31 @@
                                     <div class="form-group">
                                        <label>Gender</label>
                                        <select class="form-control">
-                                          <option>Select Gender</option>
-                                          <option>Female</option>
                                           <option>Male</option>
-                                          <option>Others</option>
+                                          <option>Female</option>
                                        </select>
                                     </div>
                                  </div>
                                  <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Date of Birth</label>
-                                       <div>
-                                          <input type="date" class="form-control">
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Class</label>
+                                       <label>Username</label>
                                        <input type="text" class="form-control">
                                     </div>
                                  </div>
                                  <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Religion</label>
+                                       <label>Password</label>
                                        <input type="text" class="form-control">
                                     </div>
                                  </div>
                                  <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Joining Date</label>
-                                       <div>
-                                          <input type="date" class="form-control">
-                                       </div>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mobile Number</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Admission Number</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Section</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Student Image</label>
-                                       <input type="file" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12">
-                                    <h5 class="form-title"><span>Parent Information</span></h5>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Name</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Occupation</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Mobile</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Email</label>
-                                       <input type="email" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Name</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Occupation</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Mobile</label>
-                                       <input type="text" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Email</label>
-                                       <input type="email" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Present Address</label>
-                                       <textarea class="form-control"></textarea>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Permanent Address</label>
-                                       <textarea class="form-control"></textarea>
+                                       <label>Role</label>
+                                       <select class="form-control">
+                                          <option>Student</option>
+                                         
+                                       </select>
+                                       
                                     </div>
                                  </div>
                                  <div class="col-12">
