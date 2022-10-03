@@ -1,5 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+require "config.php";
+require "authentication.php";
+$user = $_SESSION['user'];
+?>
 
 <!-- Mirrored from preschool.dreamguystech.com/php-template/student-details.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:49 GMT -->
 
@@ -143,7 +148,7 @@
                         </div>
                         <a class="dropdown-item" href="profile.php">My Profile</a>
                         <a class="dropdown-item" href="inbox.php">Inbox</a>
-                        <a class="dropdown-item" href="login.php">Logout</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                     </div>
                 </li>
 
@@ -156,33 +161,30 @@
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
-                        <li class="menu-title">
-                            <span>Main Menu</span>
+                    <span><?php if($user['role'] == 'Admin'){?> Admin Dashboard<?php }elseif($user['role'] == 'Student'){?>Student Dashboard<?php } ?>
+                            </span>
                         </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="index.php">Admin Dashboard</a></li>
-                                <li><a href="teacher-dashboard.php">Teacher Dashboard</a></li>
-                                <li><a href="student-dashboard.php">Student Dashboard</a></li>
-                            </ul>
-                        </li>
+                        <?php if($user['role'] == 'Student' || $user['role'] == 'Admin') {?>
                         <li class="submenu active">
                             <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="students.php">Student List</a></li>
-                                <li><a href="student-details.php" class="active">Student View</a></li>
                                 <li><a href="add-student.php">Student Add</a></li>
-                                <li><a href="edit-student.php">Student Edit</a></li>
                             </ul>
                         </li>
+                        <li class="submenu ">
+                        <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="subscribes.php" >Subscribe List</a></li>
+                           <li><a href="add-subscribe.php">Subscribe Add</a></li>
+                        </ul>
+                     </li>
+                     <?php }if($user['role'] == 'Admin'){?>
                         <li class="submenu">
                             <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
                             <ul>
                                 <li><a href="teachers.php">Teacher List</a></li>
-                                <li><a href="teacher-details.php">Teacher View</a></li>
                                 <li><a href="add-teacher.php">Teacher Add</a></li>
-                                <li><a href="edit-teacher.php">Teacher Edit</a></li>
                             </ul>
                         </li>
                         <li class="submenu">
@@ -190,18 +192,15 @@
                             <ul>
                                 <li><a href="subjects.php">Subject List</a></li>
                                 <li><a href="add-subject.php">Subject Add</a></li>
-                                <li><a href="edit-subject.php">Subject Edit</a></li>
                             </ul>
                         </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="login.php">Login</a></li>
-                                <li><a href="register.php">Register</a></li>
-                                <li><a href="forgot-password.php">Forgot Password</a></li>
-                                <li><a href="error-404.php">Error Page</a></li>
-                            </ul>
-                        </li>
+                        <li class="submenu ">
+                                <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe Grade</span> <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="subscribes-grade.php">Subscribe List</a></li>
+                                </ul>
+                            </li>
+                        <?php } ?>
                     </ul>
                 </div>
             </div>
@@ -230,32 +229,39 @@
                                     <div class="media mt-3">
                                         <img src="assets/img/user.jpg" class="mr-3" alt="...">
                                         <div class="media-body">
-                                            <ul>
-                                                <li>
-                                                    <span class="title-span">Full Name : </span>
-                                                    <span class="info-span">Daisy Parks</span>
-                                                </li>
-                                                <li>
-                                                    <span class="title-span">Department : </span>
-                                                    <span class="info-span">Computer Science</span>
-                                                </li>
-                                                <li>
-                                                    <span class="title-span">Mobile : </span>
-                                                    <span class="info-span">+91 89657 48512</span>
-                                                </li>
-                                                <li>
-                                                    <span class="title-span">Email : </span>
-                                                    <span class="info-span"><a href="https://preschool.dreamguystech.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="7216131b010b32151f131b1e5c111d1f">[email&#160;protected]</a></span>
-                                                </li>
-                                                <li>
-                                                    <span class="title-span">Gender : </span>
-                                                    <span class="info-span">Male</span>
-                                                </li>
-                                                <li>
-                                                    <span class="title-span">DOB : </span>
-                                                    <span class="info-span">22 Apr 1995</span>
-                                                </li>
-                                            </ul>
+                                            <form method="POST">
+                                                <?php if (isset($_GET['user'])) {
+                                                    $sql = "select * from user where id =" . $_GET['user'];
+                                                    $result = mysqli_query($conn, $sql);
+                                                    if ($result->num_rows > 0) {
+                                                        while ($product = $result->fetch_assoc()) {
+                                                ?>
+                                                            <ul>
+                                                                <li>
+                                                                    <span class="title-span"> Name : </span>
+                                                                    <span class="info-span"><?php echo $product['name'] ?></span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="title-span">Surname : </span>
+                                                                    <span class="info-span"><?php echo $product['surname'] ?></span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="title-span">Gender : </span>
+                                                                    <span class="info-span"><?php echo $product['gender'] ?></span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="title-span">Username : </span>
+                                                                    <span class="info-span"><?php echo $product['username'] ?></span>
+                                                                </li>
+                                                                <li>
+                                                                    <span class="title-span">Role : </span>
+                                                                    <span class="info-span"><?php echo $product['role'] ?></span>
+                                                                </li>
+                                                            </ul>
+                                            </form>
+                                <?php }
+                                                    }
+                                                } ?>
                                         </div>
                                     </div>
                                     <div class="row mt-3">

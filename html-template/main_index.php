@@ -122,7 +122,7 @@
                      </div>
                      <a class="dropdown-item" href="profile.php">My Profile</a>
                      <a class="dropdown-item" href="inbox.php">Inbox</a>
-                     <a class="dropdown-item" href="login.php">Logout</a>
+                     <a class="dropdown-item" href="logout  .php">Logout</a>
                   </div>
                </li>
             </ul>
@@ -131,18 +131,7 @@
             <div class="sidebar-inner slimscroll">
                <div id="sidebar-menu" class="sidebar-menu">
                   <ul>
-                     <li class="menu-title">
-                        <span>Main Menu</span>
-                     </li>
-                     <li class="submenu active">
-                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-                        <ul>
-                           <li><a href="index.php" class="active">Admin Dashboard</a></li>
-                           <li><a href="teacher-dashboard.php">Teacher Dashboard</a></li>
-                           <li><a href="student-dashboard.php">Student Dashboard</a></li>
-                        </ul>
-                     </li>
-                     <li class="submenu">
+                      <li class="submenu">
                         <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
                         <ul>
                            <li><a href="login.php">Login</a></li>
@@ -150,7 +139,6 @@
                            <li><a href="forgot-password.php">Forgot Password</a></li>
                            <li><a href="error-404.php">Error Page</a></li>
                         </ul>
-                     </li>
                      </li>
                   </ul>
                </div>

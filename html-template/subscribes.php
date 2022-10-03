@@ -138,11 +138,11 @@ $user = $_SESSION['user'];
          <div class="sidebar-inner slimscroll">
             <div id="sidebar-menu" class="sidebar-menu">
                <ul>
-                  <li class="menu-title">
-                     <span><?php if ($user['role'] == 'Admin') { ?> Admin Dashboard<?php } elseif ($user['role'] == 'Teacher') { ?>Teacher Dashboard<?php } ?>
-                     </span>
-                  </li>
-                  <?php if ($user['role'] == 'Admin') { ?>
+               <li class="menu-title">
+                            <span><?php if($user['role'] == 'Admin'){?> Admin Dashboard<?php }elseif($user['role'] == 'Student'){?>Student Dashboard<?php } ?>
+                            </span>
+                        </li>
+                  <?php if ($user['role'] == 'Student' || $user['role'] == 'Admin') { ?>
                      <li class="submenu ">
                         <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
                         <ul>
@@ -150,14 +150,14 @@ $user = $_SESSION['user'];
                            <li><a href="add-student.php">Student Add</a></li>
                         </ul>
                      </li>
-                     <li class="submenu ">
+                     <li class="submenu active">
                         <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe</span> <span class="menu-arrow"></span></a>
                         <ul>
-                           <li><a href="subscribes.php" >Subscribe List</a></li>
+                           <li><a href="subscribes.php" class="active">Subscribe List</a></li>
                            <li><a href="add-subscribe.php">Subscribe Add</a></li>
                         </ul>
                      </li>
-                  <?php } if ($user['role'] == 'Teacher' || $user['role'] == 'Admin') { ?>
+                  <?php } if ($user['role'] == 'Admin') { ?>
 
                      <li class="submenu ">
                         <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
@@ -166,10 +166,10 @@ $user = $_SESSION['user'];
                            <li><a href="add-teacher.php">Teacher Add</a></li>
                         </ul>
                      </li>
-                     <li class="submenu active">
+                     <li class="submenu ">
                         <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
                         <ul>
-                           <li><a href="subjects.php" class="active">Subject List</a></li>
+                           <li><a href="subjects.php">Subject List</a></li>
                            <li><a href="add-subject.php">Subject Add</a></li>
                         </ul>
                      </li>
@@ -181,6 +181,7 @@ $user = $_SESSION['user'];
                             </li>
                   <?php } ?>
 
+
                </ul>
             </div>
          </div>
@@ -190,10 +191,10 @@ $user = $_SESSION['user'];
             <div class="page-header">
                <div class="row align-items-center">
                   <div class="col">
-                     <h3 class="page-title">Subjects</h3>
+                     <h3 class="page-title">Subscribess</h3>
                      <ul class="breadcrumb">
                         <li class="breadcrumb-item"><a href="index.php">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Subjects</li>
+                        <li class="breadcrumb-item active">Subscribess</li>
                      </ul>
                   </div>
                   <div class="col-auto text-right float-right ml-auto">
@@ -204,8 +205,8 @@ $user = $_SESSION['user'];
             </div>
 
             <?php
-            if (isset($_GET['course_id'])) {
-               $delete = "delete from course where id = " . $_GET['user_id'];
+            if (isset($_GET['subscribe_id'])) {
+               $delete = "delete from student_course where id = " . $_GET['subscribe_id'];
                $resulti = mysqli_query($conn, $delete);
             }
             ?>
@@ -218,18 +219,16 @@ $user = $_SESSION['user'];
                               <thead>
                                  <tr>
                                     <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Description</th>
-                                    <th>Price</th>
-                                    <th>Teacher</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
+                                    <th>Course</th>
+                                    <th>Student</th>
+                                    <th>Date</th>
+                                    <th>Grade</th>
                                     <th>Action</th>
                                  </tr>
                               </thead>
                               <tbody>
                                  <?php
-                                 $sql = "select * from course";
+                                 $sql = "select * from student_course";
                                  $result = mysqli_query($conn, $sql);
                                  if ($result->num_rows > 0) {
                                     while ($product = $result->fetch_assoc()) {
@@ -238,9 +237,14 @@ $user = $_SESSION['user'];
                                  ?>
                                        <tr>
                                           <td><?php echo $product['id']; ?></td>
-                                          <td><?php echo $product['name']; ?></td>
-                                          <td><?php echo $product['description']; ?></td>
-                                          <td><?php echo $product['price']; ?></td>
+                                          <td>
+                                             <?php $sql = "select * from course where id = " . $product['course_id'];
+                                             $reault = mysqli_query($conn, $sql);
+                                             if ($prodi = mysqli_fetch_assoc($reault)) {
+                                                echo $prodi['name'];
+                                             }
+                                             ?>
+                                          </td>
                                           <td><?php
                                                 $findTeacher = "select * from user where id = " . $product['user_id'];
                                                 $find = mysqli_query($conn, $findTeacher);
@@ -248,23 +252,18 @@ $user = $_SESSION['user'];
                                                    echo $hasFind['name'];
                                                 }
                                                 ?></td>
-                                          <td><?php
-                                                $findTeacher = "select * from user where id = " . $product['user_id'];
-                                                $find = mysqli_query($conn, $findTeacher);
-                                                if ($hasFind = mysqli_fetch_assoc($find)) {
-                                                   echo $hasFind['role'];
-                                                }
-                                                ?></td>
-                                          <td><?php echo $product['status']; ?></td>
+                                          <td><?php echo $product['selected_at']; ?></td>
+                                          <td><?php echo $product['grade']; ?></td>
+                                          </td>
                                           <td>
-                                             <a href="edit-subject.php?id=<?php echo $product['id']; ?>" class="btn btn-sm bg-success-light ">
+                                             <a href="edit-subscribe.php?id=<?php echo $product['id']; ?>" class="btn btn-sm bg-success-light ">
                                                 <i class="fas fa-pen"></i>
                                              </a>
-                                             <a href="subjects.php?_id=<?php echo $product['id']; ?>" class="btn btn-sm bg-danger-light " onClick="return confirm('Do you really want to delete');">
+                                             <a href="subscribes.php?subscribe_id=<?php echo $product['id']; ?>" class="btn btn-sm bg-danger-light " onClick="return confirm('Do you really want to delete');">
                                                 <i class="fa fa-trash"></i></a>
 
 
-                                             <a href="subject-details.php?course=<?php echo $product['id']; ?>" class="btn btn-info btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                                             <a href="subscribe-details.php?subscribe=<?php echo $product['id']; ?>" class="btn btn-info btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                                           </td>
                                        </tr>
                                  <?php

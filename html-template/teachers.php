@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+require "config.php";
+$user = $_SESSION['user'];
+?>
 
 <!-- Mirrored from preschool.dreamguystech.com/php-template/teachers.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
 
@@ -143,7 +147,7 @@
                         </div>
                         <a class="dropdown-item" href="profile.php">My Profile</a>
                         <a class="dropdown-item" href="inbox.php">Inbox</a>
-                        <a class="dropdown-item" href="login.php">Logout</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                     </div>
                 </li>
 
@@ -157,51 +161,48 @@
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
                         <li class="menu-title">
-                            <span>Main Menu</span>
+                            <span><?php if ($user['role'] == 'Admin') { ?> Admin Dashboard<?php } elseif ($user['role'] == 'Teacher') { ?>Teacher Dashboard<?php } ?>
+                            </span>
                         </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="index.php">Admin Dashboard</a></li>
-                                <li><a href="teacher-dashboard.php">Teacher Dashboard</a></li>
-                                <li><a href="student-dashboard.php">Student Dashboard</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="students.php">Student List</a></li>
-                                <li><a href="student-details.php">Student View</a></li>
-                                <li><a href="add-student.php">Student Add</a></li>
-                                <li><a href="edit-student.php">Student Edit</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu active">
-                            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="teachers.php" class="active">Teacher List</a></li>
-                                <li><a href="teacher-details.php">Teacher View</a></li>
-                                <li><a href="add-teacher.php">Teacher Add</a></li>
-                                <li><a href="edit-teacher.php">Teacher Edit</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="subjects.php">Subject List</a></li>
-                                <li><a href="add-subject.php">Subject Add</a></li>
-                                <li><a href="edit-subject.php">Subject Edit</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="login.php">Login</a></li>
-                                <li><a href="register.php">Register</a></li>
-                                <li><a href="forgot-password.php">Forgot Password</a></li>
-                                <li><a href="error-404.php">Error Page</a></li>
-                            </ul>
-                        </li>
+                        <?php if ($user['role'] == 'Admin') { ?>
+                            <li class="submenu ">
+                                <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="students.php">Student List</a></li>
+                                    <li><a href="add-student.php">Student Add</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu ">
+                                <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe</span> <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="subscribes.php">Subscribe List</a></li>
+                                    <li><a href="add-subscribe.php">Subscribe Add</a></li>
+                                </ul>
+                            </li>
+                        <?php } if ($user['role'] == 'Teacher' || $user['role'] == 'Admin') { ?>
+
+                            <li class="submenu active">
+                                <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="teachers.php" class="active">Teacher List</a></li>
+                                    <li><a href="add-teacher.php">Teacher Add</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="subjects.php">Subject List</a></li>
+                                    <li><a href="add-subject.php">Subject Add</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu ">
+                                <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe Grade</span> <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="subscribes-grade.php">Subscribe List</a></li>
+                                </ul>
+                            </li>
+                        <?php } ?>
+
                     </ul>
                 </div>
             </div>
@@ -227,279 +228,69 @@
                     </div>
                 </div>
 
+                <?php
+                if (isset($_GET['user_id'])) {
+                    $delete = "delete from user where id = " . $_GET['user_id'];
+                    $$resulti = mysqli_query($conn, $delete);
+                }
+                ?>
+
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card card-table">
                             <div class="card-body">
-                                <div class="table-responsive">
-                                    <table class="table table-hover table-center mb-0 datatable">
-                                        <thead>
-                                            <tr>
-                                                <th>ID</th>
-                                                <th>Name</th>
-                                                <th>Class</th>
-                                                <th>Gender</th>
-                                                <th>Subject</th>
-                                                <th>Section</th>
-                                                <th>Mobile Number</th>
-                                                <th>Address</th>
-                                                <th class="text-right">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>PRE2209</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-02.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">Aaliyah</a>
-                                                    </h2>
-                                                </td>
-                                                <td>10</td>
-                                                <td>Female</td>
-                                                <td>Mathematics</td>
-                                                <td>A</td>
-                                                <td>097 3584 5870</td>
-                                                <td>911 Deer Ridge Drive,USA</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>PRE2213</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-03.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">Malynne</a>
-                                                    </h2>
-                                                </td>
-                                                <td>8</td>
-                                                <td>Female</td>
-                                                <td>Physics</td>
-                                                <td>A</td>
-                                                <td>242 362 3100</td>
-                                                <td>Bacardi Rd P.O. Box N-4880, New Providence</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>PRE2143</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-04.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">Levell Scott</a>
-                                                    </h2>
-                                                </td>
-                                                <td>10</td>
-                                                <td>Male</td>
-                                                <td>Science</td>
-                                                <td>B</td>
-                                                <td>026 7318 4366</td>
-                                                <td>P.O. Box: 41, Gaborone</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>PRE2431</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-05.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">Minnie</a>
-                                                    </h2>
-                                                </td>
-                                                <td>11</td>
-                                                <td>Male</td>
-                                                <td>History</td>
-                                                <td>C</td>
-                                                <td>952 512 4909</td>
-                                                <td>4771 Oral Lake Road, Golden Valley</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>PRE1534</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-06.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">Lois A</a>
-                                                    </h2>
-                                                </td>
-                                                <td>10</td>
-                                                <td>Female</td>
-                                                <td>English</td>
-                                                <td>B</td>
-                                                <td>413 289 1314</td>
-                                                <td>2844 Leverton Cove Road, Palmer</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>PRE2153</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-07.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">Calvin</a>
-                                                    </h2>
-                                                </td>
-                                                <td>9</td>
-                                                <td>Male</td>
-                                                <td>Mathematics</td>
-                                                <td>C</td>
-                                                <td>701 753 3810</td>
-                                                <td>1900 Hidden Meadow Drive, Crete</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>PRE1434</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-08.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">Vincent</a>
-                                                    </h2>
-                                                </td>
-                                                <td>10</td>
-                                                <td>Male</td>
-                                                <td>Mathematics</td>
-                                                <td>C</td>
-                                                <td>402 221 7523</td>
-                                                <td>3979 Ashwood Drive, Omaha</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>PRE2345</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-09.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">Kozma  Tatari</a>
-                                                    </h2>
-                                                </td>
-                                                <td>9</td>
-                                                <td>Female</td>
-                                                <td>Science</td>
-                                                <td>A</td>
-                                                <td>04 2239 968</td>
-                                                <td>Rruga E Kavajes, Condor Center, Tirana</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>PRE2365</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-10.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">John Chambers</a>
-                                                    </h2>
-                                                </td>
-                                                <td>11</td>
-                                                <td>Male</td>
-                                                <td>Botony</td>
-                                                <td>B</td>
-                                                <td>870 663 2334</td>
-                                                <td>4667 Sunset Drive, Pine Bluff</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>PRE1234</td>
-                                                <td>
-                                                    <h2 class="table-avatar">
-                                                        <a href="teacher-details.php" class="avatar avatar-sm mr-2"><img class="avatar-img rounded-circle" src="assets/img/profiles/avatar-11.jpg" alt="User Image"></a>
-                                                        <a href="teacher-details.php">Nathan Humphries</a>
-                                                    </h2>
-                                                </td>
-                                                <td>10</td>
-                                                <td>Male</td>
-                                                <td>Biology</td>
-                                                <td>A</td>
-                                                <td>077 3499 9959</td>
-                                                <td>86 Lamphey Road, Thelnetham</td>
-                                                <td class="text-right">
-                                                    <div class="actions">
-                                                        <a href="edit-teacher.php" class="btn btn-sm bg-success-light mr-2">
-                                                            <i class="fas fa-pen"></i>
-                                                        </a>
-                                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                                            <i class="fas fa-trash"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
+                                <form method="POST" class="col-md-60">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-center mb-0 datatable">
+                                            <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Name</th>
+                                                    <th>Surname</th>
+                                                    <th>Gender</th>
+                                                    <th>Username</th>
+
+
+                                                    <th class="text">Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $sql = "select * from user where role = 'Teacher'";
+                                                $result = mysqli_query($conn, $sql);
+                                                if ($result->num_rows > 0) {
+                                                    while ($product = $result->fetch_assoc()) {
+
+
+                                                ?>
+
+                                                        <tr>
+                                                            <td><?php echo $product['id']; ?></td>
+                                                            <td><?php echo $product['name']; ?></td>
+                                                            <td><?php echo $product['surname']; ?></td>
+                                                            <td><?php echo $product['gender']; ?></td>
+                                                            <td><?php echo $product['username']; ?></td>
+                                                            <td>
+                                                                <div>
+                                                                    <a href="edit-teacher.php?id=<?php echo $product['id']; ?>" class="btn btn-sm bg-success-light mr-2">
+                                                                        <i class="fas fa-pen"></i>
+                                                                    </a>
+                                                                    <a href="teachers.php?user_id=<?php echo $product['id']; ?>" class="btn btn-sm bg-danger-light" onClick="return confirm('Do you really want to delete');">
+                                                                        <i class="fa fa-trash"></i></a>
+
+
+                                                                    <a href="teacher-details.php?user=<?php echo $product['id']; ?>" class="btn btn-info btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
+                                                                </div>
+
+                                                            </td>
+                                                        </tr>
+                                                <?php
+                                                    }
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
+                                </form>
                             </div>
                         </div>
                     </div>

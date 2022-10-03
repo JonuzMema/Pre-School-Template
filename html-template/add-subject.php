@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+   require "config.php";
+   $user = $_SESSION['user'];
+   ?>
 
 <!-- Mirrored from preschool.dreamguystech.com/php-template/add-subject.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
 
@@ -141,7 +145,7 @@
                         </div>
                         <a class="dropdown-item" href="profile.php">My Profile</a>
                         <a class="dropdown-item" href="inbox.php">Inbox</a>
-                        <a class="dropdown-item" href="login.php">Logout</a>
+                        <a class="dropdown-item" href="logout.php">Logout</a>
                     </div>
                 </li>
 
@@ -154,52 +158,49 @@
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
-                        <li class="menu-title">
-                            <span>Main Menu</span>
+                    <li class="menu-title">
+                            <span><?php if($user['role'] == 'Admin'){?> Admin Dashboard<?php }elseif($user['role'] == 'Teacher'){?>Teacher Dashboard<?php } ?>
+                            </span>
                         </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="index.php">Admin Dashboard</a></li>
-                                <li><a href="teacher-dashboard.php">Teacher Dashboard</a></li>
-                                <li><a href="student-dashboard.php">Student Dashboard</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="students.php">Student List</a></li>
-                                <li><a href="student-details.php">Student View</a></li>
-                                <li><a href="add-student.php">Student Add</a></li>
-                                <li><a href="edit-student.php">Student Edit</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="teachers.php">Teacher List</a></li>
-                                <li><a href="teacher-details.php">Teacher View</a></li>
-                                <li><a href="add-teacher.php">Teacher Add</a></li>
-                                <li><a href="edit-teacher.php">Teacher Edit</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu active">
-                            <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="subjects.php">Subject List</a></li>
-                                <li><a href="add-subject.php" class="active">Subject Add</a></li>
-                                <li><a href="edit-subject.php">Subject Edit</a></li>
-                            </ul>
-                        </li>
-                        <li class="submenu">
-                            <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
-                            <ul>
-                                <li><a href="login.php">Login</a></li>
-                                <li><a href="register.php">Register</a></li>
-                                <li><a href="forgot-password.php">Forgot Password</a></li>
-                                <li><a href="error-404.php">Error Page</a></li>
-                            </ul>
-                        </li>
+                        <?php if($user['role'] == 'Admin'){?>
+                        <li class="submenu ">
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="students.php">Student List</a></li>
+                           <li><a href="add-student.php" >Student Add</a></li>
+                        </ul>
+                     </li>
+                     <li class="submenu ">
+                        <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="subscribes.php" >Subscribe List</a></li>
+                           <li><a href="add-subscribe.php">Subscribe Add</a></li>
+                        </ul>
+                     </li>
+                     
+                     <?php }if($user['role'] == 'Teacher' || $user['role'] == 'Admin') {?>
+                     <li class="submenu">
+                        <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="teachers.php">Teacher List</a></li>
+                           <li><a href="add-teacher.php">Teacher Add</a></li>
+                        </ul>
+                     </li>
+                     <li class="submenu active">
+                        <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="subjects.php">Subject List</a></li>
+                           <li><a href="add-subject.php" class="active">Subject Add</a></li>
+                        </ul>
+                     </li>
+                     <li class="submenu ">
+                                <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe Grade</span> <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="subscribes-grade.php">Subscribe List</a></li>
+                                </ul>
+                            </li>
+                     <?php } ?>
+                        
                     </ul>
                 </div>
             </div>
@@ -221,35 +222,78 @@
                     </div>
                 </div>
 
+                <?php
+        if (isset($_POST['course_add'])) {
+            $isAccountInDB = "select * from course 
+                where name = '" . $_POST['name'] . "'";
+            $isAccountQuery = mysqli_query($conn, $isAccountInDB);
+
+            if (!($product = mysqli_fetch_assoc($isAccountQuery))) {
+                $sql = "INSERT into course 
+                (name, description, price, user_id, status)
+                VALUES ('" . $_POST['name'] . "', '" . $_POST['description'] . "', '" . $_POST['price'] . "', '" . $_POST['user_id'] . "' , '" . $_POST['status'] . "')";
+
+                $result = mysqli_query($conn, $sql);
+                if (!$result) {
+                    echo "An error occurred: " . mysqli_error();
+                } else {
+        ?>
+                    <div class="alert alert-success" role="alert">
+                        <i class="bi bi-check2-all"></i> <?php echo $_POST['name'] ?> added successfully!
+                    </div>
+                <?php
+                    // header("Location: main_index.php");
+                }
+            } else {
+                ?>
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-exclamation-triangle-fill"></i> <?php echo $_POST['name'] ?> already exist!
+                </div>
+        <?php
+            }
+        }
+        ?>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form>
+                            <form method="POST">
+                                
                                     <div class="row">
                                         <div class="col-12">
                                             <h5 class="form-title"><span>Subject Information</span></h5>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Subject ID</label>
-                                                <input type="text" class="form-control">
+                                                <label>Name</label>
+                                                <input type="text" name="name" class="form-control">
+                                                <input type="hidden" name="user_id" value="<?php echo $user['id']; ?>">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Subject Name</label>
-                                                <input type="text" class="form-control">
+                                                <label>Description</label>
+                                                <input type="text" name="description"  class="form-control">
                                             </div>
                                         </div>
                                         <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Class</label>
-                                                <input type="text" class="form-control">
+                                                <label>Price</label>
+                                                <input type="text" name="price"  class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label>Status</label>
+                                                <select class="form-control"  name="status" >
+                                                    <option>In Proces</option>
+                                                    <option>Ready</option>
+                                                    <option>Finished</option>
+                                                </select>
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                            <button type="submit" name="course_add" class="btn btn-primary">Add Course</button>
                                         </div>
                                     </div>
                                 </form>

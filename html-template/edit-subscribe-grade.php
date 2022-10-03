@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-require "config.php";
-$user = $_SESSION['user'];
-?>
-<!-- Mirrored from preschool.dreamguystech.com/php-template/add-teacher.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
+   require "config.php";
+   $user = $_SESSION['user'];
+   ?>
+<!-- Mirrored from preschool.dreamguystech.com/php-template/edit-subject.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Preskool - Teachers</title>
+    <title>Preskool - Subject</title>
 
     <link rel="shortcut icon" href="assets/img/favicon.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
@@ -157,53 +157,52 @@ $user = $_SESSION['user'];
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
-                        <li class="menu-title">
+                    <li class="menu-title">
                             <span><?php if ($user['role'] == 'Admin') { ?> Admin Dashboard<?php } elseif ($user['role'] == 'Teacher') { ?>Teacher Dashboard<?php } ?>
                             </span>
                         </li>
                         <?php if ($user['role'] == 'Admin') { ?>
-                            <li class="submenu ">
-                                <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
-                                <ul>
-                                    <li><a href="students.php">Student List</a></li>
-                                    <li><a href="add-student.php">Student Add</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu ">
-                                <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe</span> <span class="menu-arrow"></span></a>
-                                <ul>
-                                    <li><a href="subscribes.php" >Subscribe List</a></li>
-                                    <li><a href="add-subscribe.php">Subscribe Add</a></li>
-                                </ul>
-                            </li>
-                        <?php }if ($user['role'] == 'Teacher' || $user['role'] == 'Admin') { ?>
-                            <li class="submenu active">
-                                <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
-                                <ul>
-                                    <li><a href="teachers.php">Teacher List</a></li>
-                                    <li><a href="add-teacher.php" class="active">Teacher Add</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu">
-                                <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
-                                <ul>
-                                    <li><a href="subjects.php">Subject List</a></li>
-                                    <li><a href="add-subject.php">Subject Add</a></li>
-                                </ul>
-                            </li>
-                            <li class="submenu ">
+                        <li class="submenu ">
+                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="students.php">Student List</a></li>
+                           <li><a href="add-student.php" >Student Add</a></li>
+                        </ul>
+                     </li>
+                     <li class="submenu ">
+                        <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="subscribes.php">Subscribe List</a></li>
+                           <li><a href="add-subscribe.php">Subscribe Add</a></li>
+                        </ul>
+                     </li>
+                     <?php } if ($user['role'] == 'Teacher' || $user['role'] == 'Admin') { ?>
+                     <li class="submenu">
+                        <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="teachers.php">Teacher List</a></li>
+                           <li><a href="add-teacher.php">Teacher Add</a></li>
+                        </ul>
+                     </li>
+                     <li class="submenu ">
+                        <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="subjects.php">Subject List</a></li>
+                           <li><a href="add-subject.php">Subject Add</a></li>
+                        </ul>
+                     </li>
+                     <li class="submenu active">
                                 <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe Grade</span> <span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="subscribes-grade.php">Subscribe List</a></li>
                                 </ul>
                             </li>
-                        <?php } ?>
-
+                     <?php } ?>
+                        
                     </ul>
                 </div>
             </div>
         </div>
-
 
 
         <div class="page-wrapper">
@@ -212,107 +211,107 @@ $user = $_SESSION['user'];
                 <div class="page-header">
                     <div class="row align-items-center">
                         <div class="col">
-                            <h3 class="page-title">Add Teachers</h3>
+                            <h3 class="page-title">Edit Subscibe Grade</h3>
                             <ul class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="teachers.php">Teachers</a></li>
-                                <li class="breadcrumb-item active">Add Teachers</li>
+                                <li class="breadcrumb-item"><a href="subscribe.php">Subscibe Grade</a></li>
+                                <li class="breadcrumb-item active">Edit Subscibe Grade</li>
                             </ul>
                         </div>
                     </div>
                 </div>
-                <?php
-                if (isset($_POST['teacher_add'])) {
-                    $isAccountInDB = "select * from user 
-                where username = '" . $_POST['username'] . "' && password = '" . $_POST['password'] . "'";
-                    $isAccountQuery = mysqli_query($conn, $isAccountInDB);
 
-                    if (!($product = mysqli_fetch_assoc($isAccountQuery))) {
-                        $sql = "INSERT into user 
-                (name, surname, gender, username, password, role)
-                VALUES ('" . $_POST['name'] . "', '" . $_POST['surname'] . "', '" . $_POST['gender'] . "', '" . $_POST['username'] . "' , '" . $_POST['password'] . "','" . $_POST['role'] . "')";
-
-                        $result = mysqli_query($conn, $sql);
-                        if (!$result) {
-                            echo "An error occurred: " . mysqli_error();
-                        } else {
-                ?>
-                            <div class="alert alert-success" role="alert">
-                                <i class="bi bi-check2-all"></i> <?php echo $_POST['name'] ?> added successfully!
-                            </div>
-                        <?php
-                            // header("Location: main_index.php");
-                        }
-                    } else {
-                        ?>
-                        <div class="alert alert-danger" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill"></i> <?php echo $_POST['name'] ?> already exist!
-                        </div>
                 <?php
-                    }
-                }
-                ?>
+      if (isset($_POST['subscribe_update_grade'])) {
+
+        $sql = "select * from course where name = '".$_POST['course']."'";
+            $resultat = mysqli_query($conn, $sql);
+            $producti = mysqli_fetch_assoc($resultat);
+            $cours_id = $producti['id'];
+
+
+         $sql = "UPDATE student_course SET  grade = '" . $_POST['grade'] . "' 
+         WHERE id = " . $_POST['subscribe_id'];
+         $result = mysqli_query($conn, $sql);
+         if (!$result) {
+            echo "An error occured: " . mysqli_error();
+         } else {
+            ?>
+                  <div class="alert alert-success" role="alert">
+                  <i class="bi bi-check2-all"></i> Subscribe updated successfully!
+                  </div>
+            <?php
+            // header("Location: subject.php");
+            
+         }
+      }
+      ?>
+      <?php
+      if (isset($_GET['id'])) {
+         $sql = "select * from student_course where id = " . (int)$_GET['id'];
+         $result = mysqli_query($conn, $sql);
+         if ($product = mysqli_fetch_assoc($result)) {
+
+      ?>
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="card">
                             <div class="card-body">
-                                <form method="POST">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h5 class="form-title"><span>Teacher Information</span></h5>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
+                            <form method="POST">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Subscribe Information</span></h5>
+                                </div>
+                                <form method="POST" class="col-md-6">
+                                <div class="col-12 col-sm-6">
                                             <div class="form-group">
-                                                <label>Name</label>
-                                                <input type="text" name="name" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Surname</label>
-                                                <input type="text" name="surname" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Gender</label>
-                                                <select class="form-control" name="gender">
-                                                    <option>Male</option>
-                                                    <option>Female</option>
+                                                <label>Course</label>
+                                                <select class="form-control"  name="course" >
+                                                    <?php 
+                                                    $courses = "select * from course";
+                                                    $result = mysqli_query($conn, $courses);
+                                                    if($result -> num_rows > 0){
+                                                        while($course = $result -> fetch_assoc()){
+                                                    ?>
+                                                    <option><?php echo $course['name']; ?></option>
+                                                    <?php }} ?>
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Username</label>
-                                                <input type="text" name="username" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Password</label>
-                                                <input type="password" name="password" class="form-control">
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-sm-6">
-                                            <div class="form-group">
-                                                <label>Role</label>
-                                                <select class="form-control" name="role">
-                                                    <option>Teacher</option>
-                                                </select>
-
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <button type="submit" name="teacher_add" class="btn btn-primary">Add Teacher</button>
-                                        </div>
+                                    <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Student</label>
+                                        <input type="text" class="form-control" name="student" value="<?php echo $user['name']; ?>">
+                                    </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Date</label>
+                                        <input type="text" class="form-control" name="date" value="<?php echo $product['selected_at']; ?>">
+                                        <input type="hidden" name="subscribe_id" value="<?php echo $product['id']; ?>">
+                                    </div>
+                                    </div>
+                                    <div class="col-12 col-sm-6">
+                                    <div class="form-group">
+                                        <label>Grade</label>
+                                        <input type="text" class="form-control" name="grade" value="<?php echo $product['grade']; ?>">
+                                    </div>
+                                    </div>
+                                    <div class="col-12">
+                                    <button type="submit" class="btn btn-primary" name="subscribe_update_grade">Edit Subscribe Grade</button>
                                     </div>
                                 </form>
                             </div>
+                            <?php
+                        }
+                     }
+
+                           ?>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
 
@@ -326,6 +325,6 @@ $user = $_SESSION['user'];
     <script src="assets/js/script.js"></script>
 </body>
 
-<!-- Mirrored from preschool.dreamguystech.com/php-template/add-teacher.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
+<!-- Mirrored from preschool.dreamguystech.com/php-template/edit-subject.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
 
 </html>

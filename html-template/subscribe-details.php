@@ -160,11 +160,10 @@ $user = $_SESSION['user'];
             <div class="sidebar-inner slimscroll">
                 <div id="sidebar-menu" class="sidebar-menu">
                     <ul>
-                        <li class="menu-title">
-                            <span><?php if ($user['role'] == 'Admin') { ?> Admin Dashboard<?php } elseif ($user['role'] == 'Teacher') { ?>Teacher Dashboard<?php } ?>
-                            </span>
+                        <span><?php if ($user['role'] == 'Admin') { ?> Admin Dashboard<?php } elseif ($user['role'] == 'Student') { ?>Student Dashboard<?php } ?>
+                        </span>
                         </li>
-                        <?php if ($user['role'] == 'Admin') { ?>
+                        <?php if ($user['role'] == 'Student' || $user['role'] == 'Admin') { ?>
                             <li class="submenu ">
                                 <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
                                 <ul>
@@ -172,23 +171,22 @@ $user = $_SESSION['user'];
                                     <li><a href="add-student.php">Student Add</a></li>
                                 </ul>
                             </li>
-                            <li class="submenu ">
+                            <li class="submenu active">
                                 <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe</span> <span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="subscribes.php">Subscribe List</a></li>
                                     <li><a href="add-subscribe.php">Subscribe Add</a></li>
                                 </ul>
                             </li>
-                        <?php } if ($user['role'] == 'Teacher' || $user['role'] == 'Admin') { ?>
-
-                            <li class="submenu active">
+                        <?php } if ($user['role'] == 'Admin') { ?>
+                            <li class="submenu">
                                 <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="teachers.php">Teacher List</a></li>
                                     <li><a href="add-teacher.php">Teacher Add</a></li>
                                 </ul>
                             </li>
-                            <li class="submenu">
+                            <li class="submenu active">
                                 <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="subjects.php">Subject List</a></li>
@@ -202,7 +200,6 @@ $user = $_SESSION['user'];
                                 </ul>
                             </li>
                         <?php } ?>
-
                     </ul>
                 </div>
             </div>
@@ -232,8 +229,8 @@ $user = $_SESSION['user'];
                                         <img src="assets/img/user.jpg" class="mr-3" alt="...">
                                         <div class="media-body">
                                             <form method="POST">
-                                                <?php if (isset($_GET['user'])) {
-                                                    $sql = "select * from user where id =" . $_GET['user'];
+                                                <?php if (isset($_GET['subscribe'])) {
+                                                    $sql = "select * from student_course where id =" . $_GET['subscribe'];
                                                     $result = mysqli_query($conn, $sql);
                                                     if ($result->num_rows > 0) {
                                                         while ($product = $result->fetch_assoc()) {
@@ -241,25 +238,30 @@ $user = $_SESSION['user'];
                                                 ?>
                                                             <ul>
                                                                 <li>
-                                                                    <span class="title-span"> Name : </span>
-                                                                    <span class="info-span"><?php echo $product['name'] ?></span>
+                                                                    <span class="title-span"> Course : </span>
+                                                                    <?php $courses = "select * from course where id = ".$product['course_id'];
+                                                                    $result = mysqli_query($conn, $courses);
+                                                                    $cours = mysqli_fetch_assoc($result);
+                                                                    ?>
+                                                                    <span class="info-span"><?php echo $cours['name'] ?></span>
                                                                 </li>
                                                                 <li>
-                                                                    <span class="title-span">Surname : </span>
-                                                                    <span class="info-span"><?php echo $product['surname'] ?></span>
+                                                                    <span class="title-span">Student : </span>
+                                                                    <?php $courses = "select * from user where id = ".$product['user_id'];
+                                                                    $result = mysqli_query($conn, $courses);
+                                                                    $student = mysqli_fetch_assoc($result);
+                                                                    ?>
+                                                                    <span class="info-span"><?php echo $student['name'] ?></span>
                                                                 </li>
                                                                 <li>
-                                                                    <span class="title-span">Gender : </span>
-                                                                    <span class="info-span"><?php echo $product['gender'] ?></span>
+                                                                    <span class="title-span">Date : </span>
+                                                                    <span class="info-span"><?php echo $product['selected_at'] ?></span>
                                                                 </li>
                                                                 <li>
-                                                                    <span class="title-span">Username : </span>
-                                                                    <span class="info-span"><?php echo $product['username'] ?></span>
+                                                                    <span class="title-span">Grade : </span>
+                                                                    <span class="info-span"><?php echo $product['grade'] ?></span>
                                                                 </li>
-                                                                <li>
-                                                                    <span class="title-span">Role : </span>
-                                                                    <span class="info-span"><?php echo $product['role'] ?></span>
-                                                                </li>
+
                                                             </ul>
                                             </form>
                                 <?php }

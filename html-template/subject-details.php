@@ -172,23 +172,24 @@ $user = $_SESSION['user'];
                                     <li><a href="add-student.php">Student Add</a></li>
                                 </ul>
                             </li>
-                            <li class="submenu ">
+                            <li class="submenu active">
                                 <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe</span> <span class="menu-arrow"></span></a>
                                 <ul>
-                                    <li><a href="subscribes.php">Subscribe List</a></li>
+                                    <li><a href="subscribes.php" class="active">Subscribe List</a></li>
                                     <li><a href="add-subscribe.php">Subscribe Add</a></li>
                                 </ul>
                             </li>
                         <?php } if ($user['role'] == 'Teacher' || $user['role'] == 'Admin') { ?>
 
-                            <li class="submenu active">
+
+                            <li class="submenu">
                                 <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="teachers.php">Teacher List</a></li>
                                     <li><a href="add-teacher.php">Teacher Add</a></li>
                                 </ul>
                             </li>
-                            <li class="submenu">
+                            <li class="submenu active">
                                 <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="subjects.php">Subject List</a></li>
@@ -202,7 +203,6 @@ $user = $_SESSION['user'];
                                 </ul>
                             </li>
                         <?php } ?>
-
                     </ul>
                 </div>
             </div>
@@ -232,8 +232,8 @@ $user = $_SESSION['user'];
                                         <img src="assets/img/user.jpg" class="mr-3" alt="...">
                                         <div class="media-body">
                                             <form method="POST">
-                                                <?php if (isset($_GET['user'])) {
-                                                    $sql = "select * from user where id =" . $_GET['user'];
+                                                <?php if (isset($_GET['course'])) {
+                                                    $sql = "select * from course where id =" . $_GET['course'];
                                                     $result = mysqli_query($conn, $sql);
                                                     if ($result->num_rows > 0) {
                                                         while ($product = $result->fetch_assoc()) {
@@ -245,20 +245,31 @@ $user = $_SESSION['user'];
                                                                     <span class="info-span"><?php echo $product['name'] ?></span>
                                                                 </li>
                                                                 <li>
-                                                                    <span class="title-span">Surname : </span>
-                                                                    <span class="info-span"><?php echo $product['surname'] ?></span>
+                                                                    <span class="title-span">Description : </span>
+                                                                    <span class="info-span"><?php echo $product['description'] ?></span>
                                                                 </li>
                                                                 <li>
-                                                                    <span class="title-span">Gender : </span>
-                                                                    <span class="info-span"><?php echo $product['gender'] ?></span>
+                                                                    <span class="title-span">Status : </span>
+                                                                    <span class="info-span"><?php echo $product['status'] ?></span>
                                                                 </li>
                                                                 <li>
-                                                                    <span class="title-span">Username : </span>
-                                                                    <span class="info-span"><?php echo $product['username'] ?></span>
+                                                                    <span class="title-span">Price : </span>
+                                                                    <span class="info-span"><?php echo $product['price'] ?></span>
                                                                 </li>
-                                                                <li>
-                                                                    <span class="title-span">Role : </span>
-                                                                    <span class="info-span"><?php echo $product['role'] ?></span>
+                                                                <?php
+                                                                $sql = "select * from user where id =" . $product['user_id'];
+                                                                $result = mysqli_query($conn, $sql);
+                                                                if ($prod = mysqli_fetch_assoc($result)) {
+                                                                ?>
+                                                                    <li>
+                                                                        <span class="title-span">Role : </span>
+                                                                        <span class="info-span"><?php echo $prod['role'] ?></span>
+                                                                    </li>
+                                                                    <li>
+                                                                        <span class="title-span">Author : </span>
+                                                                        <span class="info-span"><?php echo $prod['name'] ?></span>
+                                                                    </li>
+                                                                <?php } ?>
                                                                 </li>
                                                             </ul>
                                             </form>

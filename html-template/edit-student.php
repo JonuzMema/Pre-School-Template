@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+   require "config.php";
+   $user = $_SESSION['user'];
+   ?>
    <!-- Mirrored from preschool.dreamguystech.com/php-template/edit-student.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
    <head>
       <meta charset="utf-8">
@@ -13,6 +17,31 @@
       <link rel="stylesheet" href="assets/css/style.css">
    </head>
    <body>
+   <?php
+      if (isset($_POST['student_update'])) {
+         $sql = "UPDATE user SET name= '" . $_POST['name'] . "',surname = '" . $_POST['surname'] . "',username = '" . $_POST['username'] . "', gender = '" . $_POST['gender'] . "', password = '" . $_POST['password'] . "',  
+         role = '" . $_POST['role'] . "' WHERE id = " . $_POST['user_id'];
+         $result = mysqli_query($conn, $sql);
+         if (!$result) {
+            echo "An error occured: " . mysqli_error();
+         } else {
+            ?>
+                  <div class="alert alert-success" role="alert"></div>
+                  <i class="bi bi-check2-all"></i> <?php echo $_POST['name'] ?> updated successfully!
+                  </div>
+            <?php
+            header("Location: students.php");
+            
+         }
+      }
+      ?>
+      <?php
+      if (isset($_GET['id'])) {
+         $sql = "select * from user where id = " . (int)$_GET['id'];
+         $result = mysqli_query($conn, $sql);
+         if ($product = mysqli_fetch_assoc($result)) {
+
+      ?>
       <div class="main-wrapper">
          <div class="header">
             <div class="header-left">
@@ -122,7 +151,7 @@
                      </div>
                      <a class="dropdown-item" href="profile.php">My Profile</a>
                      <a class="dropdown-item" href="inbox.php">Inbox</a>
-                     <a class="dropdown-item" href="login.php">Logout</a>
+                     <a class="dropdown-item" href="logout.php">Logout</a>
                   </div>
                </li>
             </ul>
@@ -131,33 +160,32 @@
             <div class="sidebar-inner slimscroll">
                <div id="sidebar-menu" class="sidebar-menu">
                   <ul>
-                     <li class="menu-title">
-                        <span>Main Menu</span>
-                     </li>
-                     <li class="submenu">
-                        <a href="#"><i class="fas fa-user-graduate"></i> <span> Dashboard</span> <span class="menu-arrow"></span></a>
-                        <ul>
-                           <li><a href="index.php">Admin Dashboard</a></li>
-                           <li><a href="teacher-dashboard.php">Teacher Dashboard</a></li>
-                           <li><a href="student-dashboard.php">Student Dashboard</a></li>
-                        </ul>
-                     </li>
+                  <li class="menu-title">
+                            <span><?php if($user['role'] == 'Admin'){?> Admin Dashboard<?php }elseif($user['role'] == 'Student'){?>Student Dashboard<?php } ?>
+                            </span>
+                        </li>
+
+                           <?php if($user['role'] == 'Student' || $user['role'] == 'Admin') {?>
                      <li class="submenu active">
                         <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
                         <ul>
                            <li><a href="students.php">Student List</a></li>
-                           <li><a href="student-details.php">Student View</a></li>
                            <li><a href="add-student.php">Student Add</a></li>
-                           <li><a href="edit-student.php" class="active">Student Edit</a></li>
                         </ul>
                      </li>
+                     <li class="submenu ">
+                        <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe</span> <span class="menu-arrow"></span></a>
+                        <ul>
+                           <li><a href="subscribes.php" >Subscribe List</a></li>
+                           <li><a href="add-subscribe.php">Subscribe Add</a></li>
+                        </ul>
+                     </li>
+                     <?php }if($user['role'] == 'Admin'){?>
                      <li class="submenu">
                         <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
                         <ul>
                            <li><a href="teachers.php">Teacher List</a></li>
-                           <li><a href="teacher-details.php">Teacher View</a></li>
                            <li><a href="add-teacher.php">Teacher Add</a></li>
-                           <li><a href="edit-teacher.php">Teacher Edit</a></li>
                         </ul>
                      </li>
                      <li class="submenu">
@@ -165,18 +193,15 @@
                         <ul>
                            <li><a href="subjects.php">Subject List</a></li>
                            <li><a href="add-subject.php">Subject Add</a></li>
-                           <li><a href="edit-subject.php">Subject Edit</a></li>
                         </ul>
                      </li>
-                     <li class="submenu">
-                        <a href="#"><i class="fas fa-shield-alt"></i> <span> Authentication </span> <span class="menu-arrow"></span></a>
-                        <ul>
-                           <li><a href="login.php">Login</a></li>
-                           <li><a href="register.php">Register</a></li>
-                           <li><a href="forgot-password.php">Forgot Password</a></li>
-                           <li><a href="error-404.php">Error Page</a></li>
-                        </ul>
-                     </li>
+                     <li class="submenu ">
+                                <a href="#"><i class="fas fa-book-reader"></i> <span> Subscribe Grade</span> <span class="menu-arrow"></span></a>
+                                <ul>
+                                    <li><a href="subscribes-grade.php">Subscribe List</a></li>
+                                </ul>
+                            </li>
+                     <?php } ?>
                   </ul>
                </div>
             </div>
@@ -198,161 +223,66 @@
                   <div class="col-sm-12">
                      <div class="card">
                         <div class="card-body">
-                           <form>
-                              <div class="row">
-                                 <div class="col-12">
-                                    <h5 class="form-title"><span>Student Information</span></h5>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
+                           <form method="POST">
+                           <div class="row">
+                                <div class="col-12">
+                                    <h5 class="form-title"><span>Teacher Information</span></h5>
+                                </div>
+                                <form method="POST" class="col-md-6">
+                                    <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>First Name</label>
-                                       <input type="text" class="form-control" value="Nathan Humphries">
+                                        <label>Name</label>
+                                        <input type="text" class="form-control" name="name" value="<?php echo $product['name']; ?>">
                                     </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
+                                    </div>
+                                    <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Last Name</label>
-                                       <input type="text" class="form-control" value="Stephen Marley">
+                                        <label>Surname</label>
+                                        <input type="text" class="form-control" name="surname" value="<?php echo $product['surname']; ?>">
                                     </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
+                                    </div>
+                                    <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Student Id</label>
-                                       <input type="text" class="form-control" value="PRE1234">
+                                        <label>Gender</label>
+                                        <select class="form-control" name="gender" value="<?php echo $product['gender']; ?>">
+                                            <option>Male</option>
+                                            <option>Female</option>
+                                        </select>
                                     </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
+                                    </div>
+
+                                    <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Gender</label>
-                                       <select class="form-control">
-                                          <option>Female</option>
-                                          <option>Select Gender</option>
-                                          <option>Male</option>
-                                          <option>Others</option>
-                                       </select>
+                                        <label>Username</label>
+                                        <input type="text" class="form-control" name="username" value="<?php echo $product['username']; ?>">
+                                        <input type="hidden" name="user_id" value="<?php echo $product['id']; ?>">
                                     </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
+                                    </div>
+                                    <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Date of Birth</label>
-                                       <div>
-                                          <input type="text" class="form-control" value="26 Apr 1994">
-                                       </div>
+                                        <label>Password</label>
+                                        <input type="password" class="form-control" name="password">
                                     </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
+                                    </div>
+                                    <div class="col-12 col-sm-6">
                                     <div class="form-group">
-                                       <label>Class</label>
-                                       <input type="text" class="form-control" value="10">
+                                        <label>Role</label>
+                                        <select class="form-control" name="role" value="<?php echo $product['role']; ?>">
+                                            <option>Student</option>
+                                        </select>
                                     </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Religion</label>
-                                       <input type="text" class="form-control" value="Religion">
                                     </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Joining Date</label>
-                                       <div>
-                                          <input type="text" class="form-control" value="4 Jan 2002">
-                                       </div>
+
+                                    <div class="col-12">
+                                    <button type="submit" class="btn btn-primary" name="student_update">Edit Student</button>
                                     </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mobile Number</label>
-                                       <input type="text" class="form-control" value="077 3499 9959">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Admission Number</label>
-                                       <input type="text" class="form-control" value="PRE1252">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Section</label>
-                                       <input type="text" class="form-control" value="B">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Student Image</label>
-                                       <input type="file" class="form-control">
-                                    </div>
-                                 </div>
-                                 <div class="col-12">
-                                    <h5 class="form-title"><span>Parent Information</span></h5>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Name</label>
-                                       <input type="text" class="form-control" value="Stephen Marley">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Occupation</label>
-                                       <input type="text" class="form-control" value="Technician">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Mobile</label>
-                                       <input type="text" class="form-control" value="	402 221 7523">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Father's Email</label>
-                                       <input type="email" class="form-control" value="stephenmarley@gmail.com">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Name</label>
-                                       <input type="text" class="form-control" value="Cleary Wong">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Occupation</label>
-                                       <input type="text" class="form-control" value="Home Maker">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Mobile</label>
-                                       <input type="text" class="form-control" value="026 7318 4366">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Mother's Email</label>
-                                       <input type="email" class="form-control" value="clearywong@gmail.com">
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Present Address</label>
-                                       <textarea class="form-control">86 Lamphey Road, Thelnetham</textarea>
-                                    </div>
-                                 </div>
-                                 <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                       <label>Permanent Address</label>
-                                       <textarea class="form-control">86 Lamphey Road, Thelnetham</textarea>
-                                    </div>
-                                 </div>
-                                 <div class="col-12">
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                 </div>
-                              </div>
                            </form>
                         </div>
+                        <?php
+                        }
+                     }
+
+                           ?>
                      </div>
                   </div>
                </div>
