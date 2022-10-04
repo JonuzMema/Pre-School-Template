@@ -170,7 +170,9 @@
                         <a href="#"><i class="fas fa-user-graduate"></i> <span> Students</span> <span class="menu-arrow"></span></a>
                         <ul>
                            <li><a href="students.php">Student List</a></li>
-                           <li><a href="add-student.php">Student Add</a></li>
+                           <?php if($user['role'] == 'Admin'){?>
+                                <li><a href="add-student.php">Student Add</a></li>
+                                <?php } ?>
                         </ul>
                      </li>
                      <li class="submenu ">

@@ -3,6 +3,13 @@
 <?php
 require "config.php";
 $user = $_SESSION['user'];
+$course_array = "select name from course where user_id = ".$user['id'];
+$c_a = mysqli_query($conn, $course_array);
+if($pro = mysqli_fetch_assoc($c_a)){
+  $cartProductNumber = sizeof($pro);
+} else {
+  $cartProductNumber = 0;
+}
 ?>
 
 <!-- Mirrored from preschool.dreamguystech.com/php-template/teachers.php by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 28 Oct 2021 11:11:50 GMT -->
@@ -59,69 +66,35 @@ $user = $_SESSION['user'];
 
             <ul class="nav user-menu">
 
-                <li class="nav-item dropdown noti-dropdown">
+            <li class="nav-item dropdown noti-dropdown">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                        <i class="far fa-bell"></i> <span class="badge badge-pill">3</span>
+                    <i class="bi-cart-fill me-1"></i> Course
+                                <span class="badge bg-dark text-white ms-1 rounded-pill"><?php echo $cartProductNumber ?></span>
                     </a>
                     <div class="dropdown-menu notifications">
                         <div class="topnav-dropdown-header">
-                            <span class="notification-title">Notifications</span>
+                            <span class="notification-title">Courses</span>
                             <a href="javascript:void(0)" class="clear-noti"> Clear All </a>
                         </div>
                         <div class="noti-content">
                             <ul class="notification-list">
-                                <li class="notification-message">
-                                    <a href="#">
-                                        <div class="media">
-                                            <span class="avatar avatar-sm">
-                                                <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-02.jpg">
-                                            </span>
-                                            <div class="media-body">
-                                                <p class="noti-details"><span class="noti-title">Carlson Tech</span> has approved <span class="noti-title">your estimate</span></p>
-                                                <p class="noti-time"><span class="notification-time">4 mins ago</span></p>
+                                    <?php 
+                                    $carta = "select name from course where user_id = ".$user['id'];
+                                    $result = mysqli_query($conn, $carta);
+                                    if($prod = mysqli_fetch_assoc($result)){
+                                    ?>
+                                    <li class="notification-message">
+                                        <a href="#">
+                                            <div class="media">
+                                                
+                                                <div class="media-body">
+                                                    <p class="noti-details"><span class="noti-title"><?php echo $prod['name'] ?></span>
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="notification-message">
-                                    <a href="#">
-                                        <div class="media">
-                                            <span class="avatar avatar-sm">
-                                                <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-11.jpg">
-                                            </span>
-                                            <div class="media-body">
-                                                <p class="noti-details"><span class="noti-title">International Software Inc</span> has sent you a invoice in the amount of <span class="noti-title">$218</span></p>
-                                                <p class="noti-time"><span class="notification-time">6 mins ago</span></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="notification-message">
-                                    <a href="#">
-                                        <div class="media">
-                                            <span class="avatar avatar-sm">
-                                                <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-17.jpg">
-                                            </span>
-                                            <div class="media-body">
-                                                <p class="noti-details"><span class="noti-title">John Hendry</span> sent a cancellation request <span class="noti-title">Apple iPhone XR</span></p>
-                                                <p class="noti-time"><span class="notification-time">8 mins ago</span></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="notification-message">
-                                    <a href="#">
-                                        <div class="media">
-                                            <span class="avatar avatar-sm">
-                                                <img class="avatar-img rounded-circle" alt="User Image" src="assets/img/profiles/avatar-13.jpg">
-                                            </span>
-                                            <div class="media-body">
-                                                <p class="noti-details"><span class="noti-title">Mercury Software Inc</span> added a new product <span class="noti-title">Apple MacBook Pro</span></p>
-                                                <p class="noti-time"><span class="notification-time">12 mins ago</span></p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </li>
+                                        </a>      
+                                    </li>
+                                <?php } ?>
                             </ul>
                         </div>
                         <div class="topnav-dropdown-footer">
@@ -185,7 +158,9 @@ $user = $_SESSION['user'];
                                 <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span> Teachers</span> <span class="menu-arrow"></span></a>
                                 <ul>
                                     <li><a href="teachers.php" class="active">Teacher List</a></li>
-                                    <li><a href="add-teacher.php">Teacher Add</a></li>
+                                    <?php if ($user['role'] == 'Admin') { ?>
+                                        <li><a href="add-teacher.php">Teacher Add</a></li>
+                                    <?php } ?>
                                 </ul>
                             </li>
                             <li class="submenu">
@@ -272,12 +247,15 @@ $user = $_SESSION['user'];
                                                             <td><?php echo $product['username']; ?></td>
                                                             <td>
                                                                 <div>
-                                                                    <a href="edit-teacher.php?id=<?php echo $product['id']; ?>" class="btn btn-sm bg-success-light mr-2">
-                                                                        <i class="fas fa-pen"></i>
-                                                                    </a>
-                                                                    <a href="teachers.php?user_id=<?php echo $product['id']; ?>" class="btn btn-sm bg-danger-light" onClick="return confirm('Do you really want to delete');">
-                                                                        <i class="fa fa-trash"></i></a>
+                                                                
+                                                                    <?php if ($user['role'] == 'Admin') { ?>
+                                                                        <a href="edit-teacher.php?id=<?php echo $product['id']; ?>" class="btn btn-sm bg-success-light mr-2">
+                                                                            <i class="fas fa-pen"></i>
+                                                                        </a>
+                                                                        <a href="teachers.php?user_id=<?php echo $product['id']; ?>" class="btn btn-sm bg-danger-light" onClick="return confirm('Do you really want to delete');">
+                                                                            <i class="fa fa-trash"></i></a>
 
+                                                                    <?php } ?>
 
                                                                     <a href="teacher-details.php?user=<?php echo $product['id']; ?>" class="btn btn-info btn-sm"><i class="fa fa-info-circle" aria-hidden="true"></i></a>
                                                                 </div>

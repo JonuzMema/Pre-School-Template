@@ -91,8 +91,10 @@
                                     <select class="form-control" name="role" placeholder="Role">
                                         <p>Select Role</p>
                                         <option>Student</option>
+                                        <?php if($user['role'] == 'Admin'){ ?>
                                         <option>Teacher</option>
                                         <option>Admin</option>
+                                        <?php } ?>
                                     </select>
                                 </div>
                                 <div class="form-group mb-0">
