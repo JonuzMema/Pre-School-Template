@@ -55,7 +55,6 @@ if($pro = mysqli_fetch_assoc($c_a)){
                 </form>
             </div>
 
-
             <a class="mobile_btn" id="mobile_btn">
                 <i class="fas fa-bars"></i>
             </a>
